@@ -179,3 +179,231 @@ Ctrl + Z
   ```bash
   free -h
   ```
+
+
+# Linux Network Administration Exam Guide
+
+## User Management
+
+### Add a User to a Group (Keep Initial Group)
+
+```bash
+usermod -aG groupname username
+```
+
+**-aG**: Append to supplementary groups without removing the user from others.
+
+### Make a User Admin (Allow User to Add/Remove Users)
+
+```bash
+usermod -aG sudo U3
+```
+
+This adds `U3` to the `sudo` group, allowing administrative privileges.
+
+### Create a User in a Specific Group
+
+```bash
+useradd -G groupname -m username
+passwd username
+```
+
+**-G**: Supplementary groups
+**-m**: Create home directory
+
+## Password Management
+
+### Change Password
+
+```bash
+passwd username
+```
+
+### Lock/Unlock a Password
+
+```bash
+passwd -l username   # Lock
+passwd -u username   # Unlock
+```
+
+### Add a User to a Group with Expiration
+
+```bash
+usermod -aG groupname username
+chage -E 2025-06-30 username
+```
+
+## Group Management
+
+### Create a Group
+
+```bash
+groupadd groupname
+```
+
+### Delete a Group
+
+```bash
+groupdel groupname
+```
+
+### Remove a User from a Group
+
+```bash
+gpasswd -d username groupname
+```
+
+### Show a User's Groups
+
+```bash
+groups username
+id username
+```
+
+### Change Primary Group
+
+```bash
+usermod -g newprimarygroup username
+```
+
+### Make a User an Admin of a Group (Without Being a Member)
+
+```bash
+gpasswd -A U3 G3
+```
+
+This command assigns `U3` as the administrator of group `G3` without adding them as a group member.
+
+## File Permissions
+
+### Show Permissions
+
+```bash
+ls -l
+```
+
+### Change Permissions
+
+```bash
+chmod 755 filename
+```
+
+### Change Ownership
+
+```bash
+chown user:group filename
+```
+
+## Process Management
+
+### Kill Processes by PID
+
+```bash
+kill 335 556
+```
+
+### Kill Process by Name
+
+```bash
+pkill vi
+```
+
+### Force Process to Reread Config (Signal HUP)
+
+```bash
+kill -HUP 358
+```
+
+### Let p2 Start Before p1
+
+```bash
+p2 &
+sleep 2
+p1 &
+```
+
+### Display Remaining Processes
+
+```bash
+ps -e
+```
+
+### Show Active Processes in Real-Time
+
+```bash
+top
+htop    # If installed
+```
+
+### Suspend a Process
+
+Press `Ctrl + Z` in the terminal running the process.
+
+### Reactivate Suspended Process
+
+```bash
+fg     # Bring to foreground
+bg     # Continue in background
+```
+
+## Detailed Explanation of Process Tools
+
+### `top`
+
+* Real-time display of active processes.
+* `top`, `q` to quit
+* Press `k` in `top` to kill a process
+
+### `ps`
+
+* View current processes.
+* `ps`: Current shell only
+* `ps -ax`: All processes with terminals
+* `ps aux`: All processes with memory and CPU info
+
+### `gedit`
+
+* Opens a graphical text editor (X server must be running).
+
+### `atq`
+
+* List queued jobs for `at` scheduler.
+
+### `atrm`
+
+* Remove a scheduled job: `atrm job_number`
+
+### `kill -HUP PID`
+
+* Tells a process to reinitialize (re-read config).
+
+### `pidof`
+
+* Get PID of a process: `pidof gedit`
+
+### `pstree`
+
+* Visual tree of all processes: `pstree`
+
+### `nice`
+
+* Start process with priority: `nice -n 10 command`
+
+### `renice`
+
+* Change priority of running process: `renice 5 -p 1234`
+
+### `jobs`
+
+* Lists background/suspended jobs in current shell.
+
+### `init`
+
+* Used to change runlevels (older systems). Example: `init 0` (halt)
+* Modern systems use `systemctl` instead.
+
+---
+
+✅ Practice these with root or sudo privileges. Try running `man command` for each command to learn more.
+
+Good luck on your exam!
